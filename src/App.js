@@ -19,6 +19,8 @@ import { Suspense, useEffect } from "react";
 import { useState } from "react";
 import Contact from "./components/Contact";
 import { motion } from "framer-motion";
+import { BrowserRouter, Outlet, Route, Router, Routes } from "react-router-dom";
+
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -27,9 +29,42 @@ function App() {
   }, []);
 
   return (
-    <Suspense fallback={<Loading />}>
-      <div className="bg-default">
-        <Alert />
+    <div className="bg-default">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+function Loading() {
+  return (
+    <div className="bg-white w-screen h-screen flex items-center justify-center flex-col">
+      <span className="text-black text-4xl mb-5 font-bold">
+        LEONASCIMENTO.DEV
+      </span>
+      <progress className="progress w-56"></progress>
+    </div>
+  );
+}
+
+function ErrorPage() {
+  return (
+    <div className="bg-white w-screen h-screen flex items-center justify-center flex-col">
+      <span className="text-black text-4xl mb-5 font-bold">Error 404</span>
+      <p className="text-black">No page was found</p>
+    </div>
+  );
+}
+
+function HomePage() {
+  return (
+    <div>
+      <Alert />
+      <Suspense fallback={<Loading />}>
         <Fullpage>
           <FullPageSections>
             <FullpageSection id="Home">
@@ -46,18 +81,7 @@ function App() {
             </FullpageSection>
           </FullPageSections>
         </Fullpage>
-      </div>
-    </Suspense>
-  );
-}
-
-function Loading() {
-  return (
-    <div className="bg-white w-screen h-screen flex items-center justify-center flex-col">
-      <span className="text-black text-4xl mb-5 font-bold">
-        LEONASCIMENTO.DEV
-      </span>
-      <progress className="progress w-56"></progress>
+      </Suspense>
     </div>
   );
 }
